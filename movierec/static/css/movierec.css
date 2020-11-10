@@ -1,0 +1,29 @@
+#signup-container {
+    background: white;
+    border: 5px solid #ff9fa2;
+    margin-top: 100px;
+    padding: 25px;
+    width: 700px;
+
+
+}
+#login-container{
+        background: white;
+    border: 5px solid #ff9fa2;
+    margin-top: 100px;
+    padding: 25px;
+    width:550px;
+
+}
+body{
+    background-color: #757575
+}
+
+button{
+    background-color: #b73d48 !important;
+
+}
+#submit-button{
+    text-align: center;
+    padding-top: 25px;
+}

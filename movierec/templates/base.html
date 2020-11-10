@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="{% static 'css/movierec.css' %}">
+    <title>{% block title %}Movie recommender{% endblock %}</title>
+</head>
+<body>
+<nav>
+    <div class="nav-wrapper">
+        <a class="brand-logo center">Movie recommender</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            {% if user.is_authenticated %}
+                <li> {{ user.username }} </li>
+                <li><a href="/accounts/logout">Logout</a></li>
+
+            {% else %}
+                <li><a href="accounts/login/">Login</a></li>
+                <li><a href="/signup/">Sign up</a></li>
+            {% endif %}</ul>
+    </div>
+</nav>
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(function () {
+        $('#title').autocomplete({
+            source: '{% url 'home' %} '
+        });
+    });
+</script>
+</body>
+</html>

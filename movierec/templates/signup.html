@@ -1,0 +1,18 @@
+
+{% extends 'base.html' %}
+{% block content %}
+    <div id ="signup-container" class="container z-depth-3">
+        <div class="row">
+            <div class="col s12">
+                <h4 class="center">Sign up</h4>
+
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div id="submit-button">
+                    <button class="btn waves-effect btn-large" type="submit" name="action">Sign up <i class="material-icons right">send</i></button>
+              </div>  </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
