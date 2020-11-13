@@ -1,29 +1,88 @@
+@import url('https://fonts.googleapis.com/css?family=Oswald');
+
 #signup-container {
     background: white;
-    border: 5px solid #ff9fa2;
+    border: 5px solid #26a69a;
     margin-top: 100px;
     padding: 25px;
     width: 700px;
 
 
 }
-#login-container{
-        background: white;
-    border: 5px solid #ff9fa2;
+
+#login-container {
+    background: white;
+    border: 5px solid #26a69a;
     margin-top: 100px;
     padding: 25px;
-    width:550px;
+    width: 550px;
+}
+.nav-wrapper{
+    background-color: #006064 !important;
+}
+
+body {
+    background-color: #757575;
+    font-family: Oswald;
+}
+
+button {
+    background-color: #26a69a !important;
 
 }
-body{
-    background-color: #757575
+#nav-mobile{
+    font-size: 1.5em;
 }
-
-button{
-    background-color: #b73d48 !important;
-
+#login{
+    font-size: 1em;
 }
-#submit-button{
+#submit-button {
     text-align: center;
     padding-top: 25px;
+}
+
+.ui-helper-hidden {
+    display: none;
+}
+
+.ui-helper-hidden-accessible {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+#search-container {
+    margin-top: 50px !important;
+}
+
+.ui-menu {
+        list-style:none;
+        padding: 8px;
+        margin: 0;
+        display:block;
+        width:227px;
+        background-color: #a4a4a4;
+
+}
+
+.ui-menu-item{
+    padding: 8px;
+    border-bottom: 1px solid lightgrey;
+}
+.ui-menu-item .ui-menu-item-wrapper.ui-state-active {
+    background: #26a69a !important;
+    font-weight: bold !important;
+    color: black !important;
+}
+#movie-container{
+    text-align: center;
+    padding-top: 20px;
+}
+.card-title{
+    text-align: center;
 }

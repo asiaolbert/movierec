@@ -15,7 +15,7 @@
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             {% if user.is_authenticated %}
                 <li> {{ user.username }} </li>
-                <li><a href="/accounts/logout">Logout</a></li>
+                <li><a id="login" href="/accounts/logout">Logout</a></li>
 
             {% else %}
                 <li><a href="accounts/login/">Login</a></li>
@@ -31,11 +31,59 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
+    document.getElementById("movie-container").style.visibility = "hidden";
     $(function () {
+
         $('#title').autocomplete({
-            source: '{% url 'home' %} '
+            source: '{% url 'home' %}',
+            select: function (event, ui) {
+                AutoCompleteSelectHandler(event, ui)
+            },
+            minLength: 2,
+
         });
     });
+
+    function AutoCompleteSelectHandler(event, ui) {
+        var selectedObj = ui.item;
+        {#console.log(selectedObj);#}
+        if (selectedObj) {
+            fetch('/user_rating/?movie_id=' + selectedObj.id, {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                credentials: 'include'
+            })
+
+
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("movie-container").style.visibility = "visible";
+                    $("#movie-title").text(selectedObj.label);
+                    $("#rating").text(data["data"]);
+
+                })
+                        var film = selectedObj.label.split('(')[0]
+
+            $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=493ea9e32e1d2f282c72572e88e8a80f&query=" + film + "&callback=?", function (json) {
+                var i;
+                for (i = 0; i < json.results.length; i++) {
+                    if(json.results[i].poster_path != null){
+                        var poster_path = json.results[i].poster_path
+                    }
+                }
+                if (json !== "Nothing found.") {
+                    console.log(json);
+                    $('#poster').html('<img src=\"http://image.tmdb.org/t/p/w500/' + poster_path + '\" class=\"img-responsive\" >');
+                } else {
+                    $('#poster').html('<p> Movie poster is not available </p>')
+                }})
+
+        }
+    }
+
+
 </script>
 </body>
 </html>

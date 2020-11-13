@@ -1,3 +1,49 @@
-.body{
- background-color: pink;
+#signup-container {
+    background: white;
+    border: 5px solid #ff9fa2;
+    margin-top: 100px;
+    padding: 25px;
+    width: 700px;
+
+
+}
+#login-container{
+        background: white;
+    border: 5px solid #ff9fa2;
+    margin-top: 100px;
+    padding: 25px;
+    width:550px;}
+#search-container{
+    margin-top: 500px !important;
+}
+
+body{
+    background-color: #757575
+}
+
+button{
+    background-color: #b73d48 !important;
+
+}
+#submit-button{
+    text-align: center;
+    padding-top: 25px;
+}
+
+.ui-helper-hidden {
+	display: none;
+}
+.ui-helper-hidden-accessible {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+}
+
+#search-container{
+    margin-top:100px;
 }

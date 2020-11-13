@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.contrib.auth.models import User
 import random
@@ -9,7 +10,8 @@ from django.db import connection
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
-from .models import Movie
+from .models import Movie, Rating
+
 from django.views.generic import ListView
 # Create your views here.
 def gen_users(request):
@@ -73,20 +75,22 @@ def signup(request):
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
-
+@login_required
 def searchbox(request):
     if 'term' in request.GET:
         movies = Movie.objects.filter(title__istartswith=request.GET.get('term'))
         titles = list()
         for movie in movies:
-            titles.append(movie.title)
-        return JsonResponse(titles)
+            titles.append({"label":movie.title,"id":movie.movieId})
+        return JsonResponse(titles, safe=False)
     return render(request,"home.html")
 
-# class Search(ListView):
-#     model=Movie
-#     template_name = 'home.html'
-#     def searchbox(self):
-#         query = self.request.GET.get('title')
-#         movie_list = Movie.objects.filter(title__icontains=query)
-#         return movie_list
+@login_required
+def user_rating(request):
+    user_id = request.user.id
+    movie_id = request.GET["movie_id"]
+    rating = Rating.objects.filter(userId=user_id,movieId=movie_id).first()
+    if rating==None:
+        return JsonResponse({"data":0})
+    else:
+        return JsonResponse({"data":rating.rating})
