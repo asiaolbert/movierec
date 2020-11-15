@@ -3,13 +3,16 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 import random
 import string
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 import os
 import csv
 from django.db import connection
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
+from django.views.decorators.http import require_http_methods
+import json
+
 from .models import Movie, Rating
 
 from django.views.generic import ListView
@@ -88,9 +91,31 @@ def searchbox(request):
 @login_required
 def user_rating(request):
     user_id = request.user.id
+    print(user_id)
     movie_id = request.GET["movie_id"]
     rating = Rating.objects.filter(userId=user_id,movieId=movie_id).first()
     if rating==None:
         return JsonResponse({"data":0})
     else:
         return JsonResponse({"data":rating.rating})
+
+@login_required
+@require_http_methods(['POST', 'OPTIONS'])
+def save_rating(request):
+    user_id = request.user.id
+    print(Rating.objects.filter(userId=2073))
+    print(User.objects.filter(id=2073))
+    body = json.loads(request.body)
+    print(user_id)
+    movie_id = body['movieId']
+    rating = body['rating']
+    user = User.objects.get(id=user_id)
+    movie = Movie.objects.get(movieId=movie_id)
+    if Rating.objects.filter(userId = user_id, movieId = movie_id).exists():
+        Rating.objects.filter(userId = user_id, movieId = movie_id).update(rating = rating)
+    else:
+        Rating(userId = user,movieId=movie,rating=rating).save()
+        # TODO: fix timestamp not being added
+    return HttpResponse()
+
+
