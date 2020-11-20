@@ -11,6 +11,7 @@ urlpatterns = [
     path('home/',views.searchbox,name='home'),
     path('user_rating/',views.user_rating,name='user_rating'),
     path('save_rating/',views.save_rating,name='save_rating'),
+    path('rated_movies/',views.rated_movies,name='rated_movies'),
     # path('home/',Search.as_view(),name='home'),
     path('signup/', views.signup, name='signup'),
 

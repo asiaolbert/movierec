@@ -85,15 +85,43 @@ button {
 }
 
 #stars{
-    margin-bottom:30px;
+    margin-bottom:50px;
     text-align: center;
-    padding-left: 90px;
+    padding-left: 130px;
 
 }
+#stars-rated-movies{
+    margin-bottom:30px;
+    text-align: center;
+    padding-left: 30px;
+}
+#exp,#rating{
+    color:white;
+}
+/*.card {*/
+/*    width: 50%;*/
+/*    float: left;*/
+/*}*/
+.card-content{
+    text-align: center;
+    font-weight: bold;
+    }
 
+#rated-movies-container{
+    padding: 50px;
+}
+#rated-movies-title{
+    padding: 20px;
+    text-align: center;
+}
+hr{
+    width: 900px;
+}
 fieldset, label { margin: 0; padding: 0; }
 body{ margin: 20px; }
 h1 { font-size: 1.5em; margin: 10px; }
+
+
 
 /****** Style Star Rating Widget *****/
 

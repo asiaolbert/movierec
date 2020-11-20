@@ -30,11 +30,15 @@ function AutoCompleteSelectHandler(event, ui) {
             .then(data => {
                 document.getElementById("movie-container").style.visibility = "visible";
                 $("#movie-title").text(selectedObj.label);
-
-                if(data["data"]>0){
-                    $("#rating").text("You have already rated this film for: " + data["data"]);
-                    $("#exp").text("You can change your rating by choosing a star below.")
-                }
+                starsvalue=data["data"]
+                if (starsvalue>0){
+                for (var i=1; i<=starsvalue; i++){
+                    document.getElementById("star"+i).checked=true;
+                }}
+                // if(data["data"]>0){
+                //     $("#rating").text("You have already rated this film for: " + data["data"]);
+                //     $("#exp").text("You can change your rating by choosing a star below.")
+                // }
 
             })
 
@@ -71,9 +75,8 @@ function AutoCompleteSelectHandler(event, ui) {
                     // body:data
                 })
                     .then(response => response.json())
-                    .then(response => {
-                        console.log("request sent");
-                    })
+                    .then($("#send-text").text("Your rating is saved!"))
+
             }
         });
         var film = selectedObj.label.split('(')[0]
@@ -83,6 +86,7 @@ function AutoCompleteSelectHandler(event, ui) {
             for (i = 0; i < json.results.length; i++) {
                 if (json.results[i].poster_path != null) {
                     var poster_path = json.results[i].poster_path
+                    {break;}
                 }
             }
             if (json !== "Nothing found.") {
@@ -96,4 +100,14 @@ function AutoCompleteSelectHandler(event, ui) {
 
     }
 }
+fetch('/rated_movies/', {
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(console.log("ok"))
+
 

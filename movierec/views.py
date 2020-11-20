@@ -1,3 +1,6 @@
+import urllib.parse
+from urllib.request import urlopen
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.contrib.auth.models import User
@@ -12,6 +15,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
 from django.views.decorators.http import require_http_methods
 import json
+import datetime
 
 from .models import Movie, Rating
 
@@ -103,19 +107,36 @@ def user_rating(request):
 @require_http_methods(['POST', 'OPTIONS'])
 def save_rating(request):
     user_id = request.user.id
-    print(Rating.objects.filter(userId=2073))
-    print(User.objects.filter(id=2073))
     body = json.loads(request.body)
-    print(user_id)
     movie_id = body['movieId']
     rating = body['rating']
     user = User.objects.get(id=user_id)
     movie = Movie.objects.get(movieId=movie_id)
     if Rating.objects.filter(userId = user_id, movieId = movie_id).exists():
-        Rating.objects.filter(userId = user_id, movieId = movie_id).update(rating = rating)
+        Rating.objects.filter(userId = user_id, movieId = movie_id).update(rating = rating,timestamp=datetime.datetime.now())
     else:
-        Rating(userId = user,movieId=movie,rating=rating).save()
-        # TODO: fix timestamp not being added
+        Rating(userId = user,movieId=movie,rating=rating,timestamp=datetime.datetime.now()).save()
     return HttpResponse()
 
+@login_required
+def rated_movies(request):
+    user_id = request.user.id
+    ratings = Rating.objects.filter(userId=user_id).values('movieId','rating')
+    movies=[]
+    for movie in ratings:
+        main_title = Movie.objects.filter(movieId=movie['movieId']).values('title')
+        title = main_title[0]['title'].split(' (')[0]
+        url = urlopen("https://api.themoviedb.org/3/search/movie?api_key=493ea9e32e1d2f282c72572e88e8a80f&query=" + urllib.parse.quote(title) + "&callback=?")
+        data = url.read().decode('utf-8').strip('?()')
+        data=json.loads(data)
+        if data["results"]==[]:
+            poster_path=""
+        for i in data["results"]:
+            if i["poster_path"] != None:
+                poster_path = "http://image.tmdb.org/t/p/w500/" + i["poster_path"]
+                break
+            else:
+                poster_path = "no image"
+        movies.append({'poster':poster_path,'title':main_title[0]['title'],'rating':movie['rating']})
 
+    return render(request, 'rated_movies.html', {'movies': movies})
