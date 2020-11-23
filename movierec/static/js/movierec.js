@@ -30,11 +30,12 @@ function AutoCompleteSelectHandler(event, ui) {
             .then(data => {
                 document.getElementById("movie-container").style.visibility = "visible";
                 $("#movie-title").text(selectedObj.label);
-                starsvalue=data["data"]
-                if (starsvalue>0){
-                for (var i=1; i<=starsvalue; i++){
-                    document.getElementById("star"+i).checked=true;
-                }}
+                starsvalue = data["data"]
+                if (starsvalue > 0) {
+                    for (var i = 1; i <= starsvalue; i++) {
+                        document.getElementById("star" + i).checked = true;
+                    }
+                }
                 // if(data["data"]>0){
                 //     $("#rating").text("You have already rated this film for: " + data["data"]);
                 //     $("#exp").text("You can change your rating by choosing a star below.")
@@ -86,7 +87,9 @@ function AutoCompleteSelectHandler(event, ui) {
             for (i = 0; i < json.results.length; i++) {
                 if (json.results[i].poster_path != null) {
                     var poster_path = json.results[i].poster_path
-                    {break;}
+                    {
+                        break;
+                    }
                 }
             }
             if (json !== "Nothing found.") {
@@ -100,14 +103,19 @@ function AutoCompleteSelectHandler(event, ui) {
 
     }
 }
-fetch('/rated_movies/', {
-            headers: {
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            credentials: 'include'
-        })
-        .then(response => response.json())
-        .then(console.log("ok"))
+
+// document.getElementById("rated-movies").addEventListener("load", stars);
+
+// function stars() {
+//     alert("goog");
+    // fetch('/rated_movies/', {
+    //     headers: {
+    //         'Accept': 'application/json',
+    //         'X-Requested-With': 'XMLHttpRequest'
+    //     },
+    //     credentials: 'include'
+    // })
+    //     .then(response => response.json())
+    //     .then(console.log("ok"))}
 
 

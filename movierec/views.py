@@ -1,8 +1,9 @@
 import urllib.parse
 from urllib.request import urlopen
-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from movierec.algorytmy.content_based import generate_ratings
+from movierec.algorytmy.collaborative_filtering import generate_reccomendation
 from django.contrib.auth.models import User
 import random
 import string
@@ -140,3 +141,17 @@ def rated_movies(request):
         movies.append({'poster':poster_path,'title':main_title[0]['title'],'rating':movie['rating']})
 
     return render(request, 'rated_movies.html', {'movies': movies})
+
+def generate_recommendations(request):
+    user_id = request.user.id
+    ratings = Rating.objects.filter(userId=user_id).values('userId','movieId','rating','timestamp')
+    rating = list(ratings)
+    for row in rating:
+        row['timestamp']= row['timestamp'].timestamp()
+        row['userId']=0
+    # content_recommendations = generate_ratings(rating,10)
+    # print(content_recommendations)
+    collaborative_recomendations = generate_reccomendation(rating,10)
+    print(collaborative_recomendations)
+    recommendations =[]
+    return render(request,'recommended_movies.html',{'recommendations':recommendations})
