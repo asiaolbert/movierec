@@ -68,9 +68,7 @@ def generate_reccomendation(data,n_movies):
     normalized_ratings = normalize_ratings(matrix)
     similar_users = generate_similar_users(normalized_ratings,0,10)
     moviesId = list(similar_users.columns)
-    print(similar_users)
-    #fix this
-    predicted_ratings = similar_users.loc[1].values
+    predicted_ratings = similar_users.loc[0].values
     recommended_movies = list(zip(moviesId,predicted_ratings))
     recommended_movies.sort(key=lambda tup: tup[1],reverse=True)
     recommended_movies_list =[]

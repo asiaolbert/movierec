@@ -1,3 +1,5 @@
+import itertools
+
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from itertools import combinations
@@ -47,5 +49,6 @@ def generate_ratings(data,n_movies):
     for x in range (len(similarity_df.columns)):
         # we can choose how many similar movies per one movie function returns
         recommended_movies.append(list(similarity_df.sort_values(similarity_df.columns[x],ascending=False).head(1).index.values))
-    return(recommended_movies[0:n_movies])
+
+    return(list(itertools.chain.from_iterable(recommended_movies[0:n_movies])))
 

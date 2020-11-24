@@ -141,17 +141,30 @@ def rated_movies(request):
         movies.append({'poster':poster_path,'title':main_title[0]['title'],'rating':movie['rating']})
 
     return render(request, 'rated_movies.html', {'movies': movies})
-
+@login_required
+@require_http_methods(['POST', 'OPTIONS','GET'])
 def generate_recommendations(request):
-    user_id = request.user.id
-    ratings = Rating.objects.filter(userId=user_id).values('userId','movieId','rating','timestamp')
-    rating = list(ratings)
-    for row in rating:
-        row['timestamp']= row['timestamp'].timestamp()
-        row['userId']=0
-    # content_recommendations = generate_ratings(rating,10)
-    # print(content_recommendations)
-    collaborative_recomendations = generate_reccomendation(rating,10)
-    print(collaborative_recomendations)
-    recommendations =[]
-    return render(request,'recommended_movies.html',{'recommendations':recommendations})
+    if request.method == 'POST':
+        body = json.loads(request.body.decode('utf8'))
+        slider_value = int(float(body['slider']))
+        user_id = request.user.id
+        ratings = Rating.objects.filter(userId=user_id).values('userId', 'movieId', 'rating', 'timestamp')
+        rating = list(ratings)
+        recommendations = []
+        for row in rating:
+            row['timestamp'] = row['timestamp'].timestamp()
+            row['userId'] = 0
+        content_recommendations = generate_ratings(rating, 10)
+        collaborative_recomendations = generate_reccomendation(rating, 10)
+        if slider_value > 0:
+            recommendations.append(content_recommendations[0:(5 + slider_value)])
+            recommendations.append(collaborative_recomendations[0:(5 - slider_value)])
+        else:
+            recommendations.append(content_recommendations[0:(5 - slider_value)])
+            recommendations.append(collaborative_recomendations[0:(5 + slider_value)])
+        print(recommendations)
+        print(content_recommendations)
+        print(collaborative_recomendations)
+        return render(request,'recommended_movies.html',{'recommendations':recommendations})
+    else:
+        return render(request,'recommended_movies.html')
