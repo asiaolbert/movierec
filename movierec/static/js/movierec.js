@@ -104,20 +104,6 @@ function AutoCompleteSelectHandler(event, ui) {
     }
 }
 
-// document.getElementById("rated-movies").addEventListener("load", stars);
-
-// function stars() {
-//     alert("goog");
-// fetch('/rated_movies/', {
-//     headers: {
-//         'Accept': 'application/json',
-//         'X-Requested-With': 'XMLHttpRequest'
-//     },
-//     credentials: 'include'
-// })
-//     .then(response => response.json())
-//     .then(console.log("ok"))}
-
 
 var rangeSlider = document.getElementById('slider-range');
 noUiSlider.create(rangeSlider, {
@@ -132,12 +118,14 @@ noUiSlider.create(rangeSlider, {
 var rangeSliderValueElement = document.getElementById('slider-range-value');
 
 rangeSlider.noUiSlider.on('update', function (values, handle) {
-    rangeSliderValueElement.innerHTML = values[handle];})
+    rangeSliderValueElement.innerHTML = values[handle];
+})
 
 document.getElementById('read-button').addEventListener('click', function () {
 
     value = rangeSlider.noUiSlider.get()
     console.log(value);
+
     function getCookie(name) {
         var cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -163,12 +151,14 @@ document.getElementById('read-button').addEventListener('click', function () {
             "X-CSRFToken": getCookie('csrftoken'),
         },
         credentials: 'same-origin',
-        body: JSON.stringify({'slider':value}),
+        body: JSON.stringify({'slider': value}),
     })
         .then(response => response.json())
-        // .then(response => response.text())
-        // .then(text => console.log(text))
+    // .then(response => response.text())
+    // .then(text => console.log(text))
 });
+
+
 
 
 
