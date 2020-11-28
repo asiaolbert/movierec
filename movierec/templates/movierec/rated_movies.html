@@ -1,4 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'movierec/base.html' %}
+{% load static %}
+
 {% block content %}
 <div  class="container" id="rated-movies-title">
     <h3>Movies you rated</h3></div>
@@ -46,4 +48,5 @@
                 </div>{% endfor %}
         </div>
     </div>
+    <script src="{% static "js/ratedmovies.js" %}"></script>
 {% endblock content %}

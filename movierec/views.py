@@ -67,7 +67,7 @@ def read_csv_rating(request):
     return JsonResponse({'ok':1})
 
 def home(request):
-    return render(request, "home.html")
+    return render(request, "movierec/home.html")
 
 def signup(request):
     if request.method == 'POST':
@@ -81,7 +81,7 @@ def signup(request):
             return redirect('home')
     else:
         form = UserCreationForm()
-    return render(request, 'signup.html', {'form': form})
+    return render(request, 'movierec/signup.html', {'form': form})
 
 @login_required
 def searchbox(request):
@@ -91,7 +91,7 @@ def searchbox(request):
         for movie in movies:
             titles.append({"label":movie.title,"id":movie.movieId})
         return JsonResponse(titles, safe=False)
-    return render(request,"home.html")
+    return render(request,"movierec/home.html")
 
 @login_required
 def user_rating(request):
@@ -140,7 +140,7 @@ def rated_movies(request):
                 poster_path = "no image"
         movies.append({'poster':poster_path,'title':main_title[0]['title'],'rating':movie['rating']})
 
-    return render(request, 'rated_movies.html', {'movies': movies})
+    return render(request, 'movierec/rated_movies.html', {'movies': movies})
 @login_required
 @require_http_methods(['POST', 'OPTIONS','GET'])
 def generate_recommendations(request):
@@ -165,6 +165,6 @@ def generate_recommendations(request):
         print(recommendations)
         print(content_recommendations)
         print(collaborative_recomendations)
-        return render(request,'recommended_movies.html',{'recommendations':recommendations})
+        return render(request,'movierec/recommended_movies.html',{'recommendations':recommendations})
     else:
-        return render(request,'recommended_movies.html')
+        return render(request,'movierec/recommended_movies.html')
