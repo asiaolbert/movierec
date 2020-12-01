@@ -1,5 +1,6 @@
 import itertools
 
+import numpy
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from itertools import combinations
@@ -46,9 +47,24 @@ def generate_ratings(data,n_movies):
     cosine_matrix = cosine_similarity(all_movies_tfidf,best_movies_tfidf)
     similarity_df = pd.DataFrame(cosine_matrix,columns = best_movies, index=movies['movieId'])
     recommended_movies=[]
+    # print(similarity_df.sort_values(similarity_df.columns[0],ascending=False).head(1))
+    # print(similarity_df.sort_values(similarity_df.columns[2],ascending=False).head(2))
+    # print(type(similarity_df.sort_values(similarity_df.columns[0], ascending=False).head(2).index.values))
+
     for x in range (len(similarity_df.columns)):
         # we can choose how many similar movies per one movie function returns
-        recommended_movies.append(list(similarity_df.sort_values(similarity_df.columns[x],ascending=False).head(1).index.values))
+        if list(similarity_df.sort_values(similarity_df.columns[x],ascending=False).head(1).index.values) not in recommended_movies:
+            recommended_movies.append(list(similarity_df.sort_values(similarity_df.columns[x],ascending=False).head(1).index.values))
+        else:
+            a = similarity_df.sort_values(similarity_df.columns[x], ascending=False).head(2).index.values
+            new_a = numpy.delete(a,0)
+            recommended_movies.append(list(new_a))
 
-    return(list(itertools.chain.from_iterable(recommended_movies[0:n_movies])))
+    # return(list(itertools.chain.from_iterable(recommended_movies[0:n_movies])))
 
+    m_list = list(itertools.chain.from_iterable(recommended_movies[0:n_movies]))
+    recommended_movies = []
+    for x in m_list:
+        recommended_movies.append(str(x))
+
+    return recommended_movies

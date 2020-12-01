@@ -10,5 +10,5 @@ function stars() {
         credentials: 'include'
     })
         .then(response => response.json())
-        .then(console.log("ok"))
+
 }

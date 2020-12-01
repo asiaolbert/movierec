@@ -18,7 +18,7 @@ from django.views.decorators.http import require_http_methods
 import json
 import datetime
 
-from .models import Movie, Rating
+from .models import Movie, Rating, Recommendation
 
 from django.views.generic import ListView
 # Create your views here.
@@ -96,7 +96,6 @@ def searchbox(request):
 @login_required
 def user_rating(request):
     user_id = request.user.id
-    print(user_id)
     movie_id = request.GET["movie_id"]
     rating = Rating.objects.filter(userId=user_id,movieId=movie_id).first()
     if rating==None:
@@ -115,8 +114,56 @@ def save_rating(request):
     movie = Movie.objects.get(movieId=movie_id)
     if Rating.objects.filter(userId = user_id, movieId = movie_id).exists():
         Rating.objects.filter(userId = user_id, movieId = movie_id).update(rating = rating,timestamp=datetime.datetime.now())
+        ratings = Rating.objects.filter(userId=user_id).values('userId','movieId', 'rating','timestamp')
+        rating = list(ratings)
+        recommendations = []
+        for row in rating:
+            row['timestamp'] = row['timestamp'].timestamp()
+            row['userId'] = 0
+        content_recommendations = generate_ratings(rating, 10)
+        collaborative_recommendations = generate_reccomendation(rating, 10)
+        content=[]
+        collaborative=[]
+        for x in content_recommendations:
+            movie_title = Movie.objects.filter(movieId=int(x)).values('title')[0]['title']
+            content.append(movie_title)
+        for x in collaborative_recommendations:
+            movie_title = Movie.objects.filter(movieId=int(x)).values('title')[0]['title']
+            collaborative.append(movie_title)
+        recommendations.append({"content_recommendations":content, "collaborative_recommendations":collaborative})
+
+        print(recommendations)
+        json_file = json.dumps(recommendations)
+        if Recommendation.objects.filter(userId=user_id,recommended_movies=json_file).exists():
+            Recommendation.objects.filter(userId=user_id,recommended_movies=json_file).update()
+        else:
+            Recommendation(userId=user, recommended_movies=json_file).save()
     else:
         Rating(userId = user,movieId=movie,rating=rating,timestamp=datetime.datetime.now()).save()
+        ratings = Rating.objects.filter(userId=user_id).values('userId','movieId', 'rating','timestamp')
+        rating = list(ratings)
+        recommendations = []
+        for row in rating:
+            row['timestamp'] = row['timestamp'].timestamp()
+            row['userId'] = 0
+        content_recommendations = generate_ratings(rating, 10)
+        collaborative_recommendations = generate_reccomendation(rating, 10)
+        content = []
+        collaborative = []
+        for x in content_recommendations:
+            movie_title = Movie.objects.filter(movieId=int(x)).values('title')[0]['title']
+            content.append(movie_title)
+        for x in collaborative_recommendations:
+            movie_title = Movie.objects.filter(movieId=int(x)).values('title')[0]['title']
+            collaborative.append(movie_title)
+        recommendations.append({"content_recommendations": content,
+                                "collaborative_recommendations": collaborative})
+        print(recommendations)
+        json_file = json.dumps(recommendations)
+        if Recommendation.objects.filter(userId=user_id, recommended_movies=json_file).exists():
+            Recommendation.objects.filter(userId=user_id, recommended_movies=json_file).update()
+        else:
+            Recommendation(userId=user, recommended_movies=json_file).save()
     return HttpResponse()
 
 @login_required
@@ -143,28 +190,43 @@ def rated_movies(request):
     return render(request, 'movierec/rated_movies.html', {'movies': movies})
 @login_required
 @require_http_methods(['POST', 'OPTIONS','GET'])
-def generate_recommendations(request):
-    if request.method == 'POST':
-        body = json.loads(request.body.decode('utf8'))
-        slider_value = int(float(body['slider']))
-        user_id = request.user.id
-        ratings = Rating.objects.filter(userId=user_id).values('userId', 'movieId', 'rating', 'timestamp')
-        rating = list(ratings)
-        recommendations = []
-        for row in rating:
-            row['timestamp'] = row['timestamp'].timestamp()
-            row['userId'] = 0
-        content_recommendations = generate_ratings(rating, 10)
-        collaborative_recomendations = generate_reccomendation(rating, 10)
-        if slider_value > 0:
-            recommendations.append(content_recommendations[0:(5 + slider_value)])
-            recommendations.append(collaborative_recomendations[0:(5 - slider_value)])
-        else:
-            recommendations.append(content_recommendations[0:(5 - slider_value)])
-            recommendations.append(collaborative_recomendations[0:(5 + slider_value)])
-        print(recommendations)
-        print(content_recommendations)
-        print(collaborative_recomendations)
-        return render(request,'movierec/recommended_movies.html',{'recommendations':recommendations})
-    else:
-        return render(request,'movierec/recommended_movies.html')
+def recommended_movies(request):
+    return render(request,'movierec/recommended_movies.html')
+    # if request.method == 'POST':
+    #     body = json.loads(request.body.decode('utf8'))
+    #     slider_value = int(float(body['slider']))
+    #     user_id = request.user.id
+    #     ratings = Rating.objects.filter(userId=user_id).values('userId', 'movieId', 'rating', 'timestamp')
+    #     rating = list(ratings)
+    #     recommendations = []
+    #     for row in rating:
+    #         row['timestamp'] = row['timestamp'].timestamp()
+    #         row['userId'] = 0
+    #     content_recommendations = generate_ratings(rating, 10)
+    #     collaborative_recomendations = generate_reccomendation(rating, 10)
+    #     if slider_value > 0:
+    #         recommendations.append(content_recommendations[0:(5 + slider_value)])
+    #         recommendations.append(collaborative_recomendations[0:(5 - slider_value)])
+    #     else:
+    #         recommendations.append(content_recommendations[0:(5 - slider_value)])
+    #         recommendations.append(collaborative_recomendations[0:(5 + slider_value)])
+    #     print(recommendations)
+    #     print(content_recommendations)
+    #     print(collaborative_recomendations)
+    #     return render(request,'movierec/recommended_movies.html',{'recommendations':recommendations})
+    # else:
+def movie_list(request):
+    user_id= request.user.id
+    recommendations_object = Recommendation.objects.filter(userId = user_id).values('recommended_movies')
+    recommendations = recommendations_object[0]['recommended_movies']
+    number_of_rated_movies = Rating.objects.filter(userId=user_id).count()
+    min=5
+    max=50
+    if number_of_rated_movies>max:
+        number_of_rated_movies=max
+    elif number_of_rated_movies<min:
+        number_of_rated_movies=min
+    min_max_normalization = (number_of_rated_movies-min)/(max-min)
+    default= (min_max_normalization*8)-5
+    print(type(json.loads(recommendations)))
+    return JsonResponse({"data":json.loads(recommendations),"default":default})

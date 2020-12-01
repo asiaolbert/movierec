@@ -73,6 +73,6 @@ def generate_reccomendation(data,n_movies):
     recommended_movies.sort(key=lambda tup: tup[1],reverse=True)
     recommended_movies_list =[]
     for movie in recommended_movies:
-        recommended_movies_list.append(movie[0])
+        recommended_movies_list.append(str(movie[0]))
     return(recommended_movies_list[0:n_movies])
 

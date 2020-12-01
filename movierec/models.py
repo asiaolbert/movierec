@@ -22,3 +22,6 @@ class Rating(models.Model):
 
     # def __str__(self):
     #     return self.userId + ":" + self.movieId + ":" + self.rating
+class Recommendation(models.Model):
+    userId = models.ForeignKey(User,to_field='id', on_delete=models.CASCADE)
+    recommended_movies = models.JSONField()

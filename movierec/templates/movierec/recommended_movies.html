@@ -1,21 +1,25 @@
 {% extends 'movierec/base.html' %}
+{% load static %}
 {% block content %}
 {#  <form action="#">#}
 {#    <p class="range-field">#}
 {#      <input type="range" id="test5" min="0" max="100" />#}
 {#    </p>#}
 {#  </form>#}
-    <div class="container">
+    <div class="container" id="recommendations-container">
     <div class="row">
         <div class="col s2">
-            <p>Collaborative filtering</p>
+            <p>Content based</p>
         </div>
     <div class="col s8" id="slider-range"></div>
         <div class="col s2">
-            <p>Content based</p>
+            <p>Collaborative filtering</p>
         </div></div>
     <div id="slider-range-value"></div>
-    <button class="btn waves-effect btn-small" id ='read-button'>Read slider value</button>
-    <div>{{ recommendations }}</div>
     </div>
+        <div  class="container">
+            <div class="row" id="recommended-movies">
+    </div></div>
+    <script src="//cdn.bootcss.com/noUiSlider/8.5.1/nouislider.js"></script>
+        <script src="{% static "js/recommended_movies.js" %}"></script>
 {% endblock content %}

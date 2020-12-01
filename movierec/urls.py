@@ -12,7 +12,8 @@ urlpatterns = [
     path('user_rating/',views.user_rating,name='user_rating'),
     path('save_rating/',views.save_rating,name='save_rating'),
     path('rated_movies/',views.rated_movies,name='rated_movies'),
-    path('recommended_movies/',views.generate_recommendations,name='recommended_movies'),
+    path('recommended_movies/',views.recommended_movies,name='recommended_movies'),
+    path('movie_list/',views.movie_list,name='movie_list'),
     # path('home/',Search.as_view(),name='home'),
     path('signup/', views.signup, name='signup'),
 

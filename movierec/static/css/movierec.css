@@ -26,11 +26,14 @@ body {
     background-color: #757575;
     font-family: Oswald;
 }
-
-button {
-    background-color: #26a69a !important;
-
+a{
+    color:black;
 }
+
+/*button {*/
+/*    background-color: #26a69a !important;*/
+
+/*}*/
 #nav-mobile{
     font-size: 1.5em;
 }
@@ -105,7 +108,7 @@ button {
 /*}*/
 .card-content{
     text-align: center;
-    font-weight: bold;
+    /*font-weight: bold;*/
     }
 
 #rated-movies-container{
@@ -114,6 +117,20 @@ button {
 #rated-movies-title{
     padding: 20px;
     text-align: center;
+}
+#button-container{
+    text-align: center;
+    padding:10px;
+}
+#movie-title{
+    font-size:14px;
+}
+#recommendations-container{
+    padding-top: 50px;
+}
+#rec-poster{
+    width:234px;
+    height: 351px;
 }
 hr{
     width: 900px;
@@ -133,6 +150,9 @@ h1 { font-size: 1.5em; margin: 10px; }
 #tmdb{
     width: 300px;
 
+}
+#no-poster{
+    width:300px;
 }
 /****** Style Star Rating Widget *****/
 

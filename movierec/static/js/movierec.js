@@ -1,4 +1,4 @@
-// document.getElementById("movie-container").style.visibility = "hidden";
+document.getElementById("movie-container").style.visibility = "hidden";
 $(function () {
     $('#title').autocomplete({
         source: '/home/',
@@ -92,71 +92,18 @@ function AutoCompleteSelectHandler(event, ui) {
                     }
                 }
             }
-            if (json !== "Nothing found.") {
+            if (json.total_results !== 0) {
                 console.log(json);
                 $('#poster').html('<img src=\"http://image.tmdb.org/t/p/w500/' + poster_path + '\" class=\"img-responsive\" >');
             } else {
-                $('#poster').html('<p> Movie poster is not available </p>')
+                $('#poster').html('<p>No image found</p>')
             }
         })
-
 
     }
 }
 
 
-var rangeSlider = document.getElementById('slider-range');
-noUiSlider.create(rangeSlider, {
-    start: [0],
-    step: 1,
-    range: {
-        'min': [-5],
-        'max': [5]
-    }
-});
-
-var rangeSliderValueElement = document.getElementById('slider-range-value');
-
-rangeSlider.noUiSlider.on('update', function (values, handle) {
-    rangeSliderValueElement.innerHTML = values[handle];
-})
-
-document.getElementById('read-button').addEventListener('click', function () {
-
-    value = rangeSlider.noUiSlider.get()
-    console.log(value);
-
-    function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-
-    fetch('/recommended_movies/', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-            // 'Content-Type': 'application/json',
-            "X-CSRFToken": getCookie('csrftoken'),
-        },
-        credentials: 'same-origin',
-        body: JSON.stringify({'slider': value}),
-    })
-        .then(response => response.json())
-    // .then(response => response.text())
-    // .then(text => console.log(text))
-});
 
 
 
