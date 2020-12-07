@@ -97,7 +97,7 @@ a{
 #stars-rated-movies{
     margin-bottom:30px;
     text-align: center;
-    padding-left: 30px;
+    padding-left: 100px;
 }
 #exp,#rating{
     color:white;
@@ -122,11 +122,27 @@ a{
     text-align: center;
     padding:10px;
 }
-#movie-title{
+#movie-title2{
     font-size:14px;
 }
 #recommendations-container{
     padding-top: 50px;
+}
+#slider-range{
+    text-align: center;
+    margin-top:120px;
+}
+#content-container{
+    padding-right: 50px;
+    text-align: center;
+}
+#collaborative-container{
+    text-align: center;
+    padding-left: 50px;
+}
+#desc{font-size: 17px;}
+#cont-slid{
+    text-align: center;
 }
 /*#rec-poster,#no-poster{*/
 /*    width:235px;*/

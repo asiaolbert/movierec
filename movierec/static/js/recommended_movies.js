@@ -22,7 +22,7 @@ function movie_card(data,i, algo) {
         '                        </div>\n' +
         '                        <div class="card-stacked">\n' +
         '                            <div class="card-content">\n' +
-        '                                <p id="movie-title">' + movie_title2 + '</p>\n' +
+        '                                <p id="movie-title2">' + movie_title2 + '</p>\n' +
         '                            </div></div></div></div>')}
          else{
              $("#recommended-movies").append('   <div class="col s3">\n' +

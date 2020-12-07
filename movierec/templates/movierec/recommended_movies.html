@@ -1,25 +1,36 @@
 {% extends 'movierec/base.html' %}
 {% load static %}
 {% block content %}
-{#  <form action="#">#}
-{#    <p class="range-field">#}
-{#      <input type="range" id="test5" min="0" max="100" />#}
-{#    </p>#}
-{#  </form>#}
+    {#  <form action="#">#}
+    {#    <p class="range-field">#}
+    {#      <input type="range" id="test5" min="0" max="100" />#}
+    {#    </p>#}
+    {#  </form>#}
     <div class="container" id="recommendations-container">
-    <div class="row">
-        <div class="col s2">
-            <p>Content based</p>
-        </div>
-    <div class="col s8" id="slider-range"></div>
-        <div class="col s2">
-            <p>Collaborative filtering</p>
-        </div></div>
-    <div id="slider-range-value"></div>
+        <div class="container" id="slider-container">
+            <div class="row">
+                <div class="col s3" id="content-container">
+                    <h3>Content based</h3>
+                    <p id="desc">This method shows similar movies to the ones you have already seen. Here you can find
+                        more more movies like the ones you already love </p>
+                </div>
+                <div class="col s6" id="cont-slid">
+                    <div class="container" id="slider-range"></div>
+                    <div id="slider-range-value"></div>
+                </div>
+
+            <div class="col s3" id="collaborative-container">
+                <h3>Collaborative filtering</h3>
+                <p id="desc">This technique can filter out movies that you might like on the basis of what other similar
+                    users like. Here you can find movies unlike any previously viewed</p>
+            </div>
+        </div> </div>
+
     </div>
-        <div  class="container">
-            <div class="row" id="recommended-movies">
-    </div></div>
+    <div class="container">
+        <div class="row" id="recommended-movies">
+        </div>
+    </div>
     <script src="//cdn.bootcss.com/noUiSlider/8.5.1/nouislider.js"></script>
-        <script src="{% static "js/recommended_movies.js" %}"></script>
+    <script src="{% static "js/recommended_movies.js" %}"></script>
 {% endblock content %}
