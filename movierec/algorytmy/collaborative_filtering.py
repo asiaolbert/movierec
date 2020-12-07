@@ -11,7 +11,7 @@ def add_user(data):
     return new_matrix
 #first we need to normalize ratings
 def normalize_ratings(matrix):
-    rating_pd = matrix.pivot(index='userId', columns='movieId', values='rating')
+    rating_pd = matrix.pivot_table(index='userId', columns='movieId', values='rating')
     mean = rating_pd.mean(axis=1,skipna=True).to_frame().rename(columns={0:'mean'})
     mean_matrix=pd.merge(matrix, mean, on='userId')
 
@@ -19,7 +19,7 @@ def normalize_ratings(matrix):
     mean_matrix['centered_cosine']= mean_matrix['rating'] - mean_matrix['mean']
 
     # we fill missing values with 0, with is the average rating of every user
-    normalized_ratings = mean_matrix.pivot(index='userId', columns='movieId', values='centered_cosine').fillna(0)
+    normalized_ratings = mean_matrix.pivot_table(index='userId', columns='movieId', values='centered_cosine').fillna(0)
     return normalized_ratings
 
 def generate_similar_users(normalized_ratings,user_id,n_users):
@@ -71,8 +71,12 @@ def generate_reccomendation(data,n_movies):
     predicted_ratings = similar_users.loc[0].values
     recommended_movies = list(zip(moviesId,predicted_ratings))
     recommended_movies.sort(key=lambda tup: tup[1],reverse=True)
+    rated_movies=[]
+    for x in data:
+       rated_movies.append(x['movieId'])
     recommended_movies_list =[]
     for movie in recommended_movies:
-        recommended_movies_list.append(str(movie[0]))
+        if movie[0] not in rated_movies:
+            recommended_movies_list.append(str(movie[0]))
     return(recommended_movies_list[0:n_movies])
 

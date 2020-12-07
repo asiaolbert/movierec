@@ -22,6 +22,8 @@ from .models import Movie, Rating, Recommendation
 
 from django.views.generic import ListView
 # Create your views here.
+def home_redirect(request):
+    return redirect("/home/")
 def gen_users(request):
     def get_random_username():
         letters = string.ascii_lowercase
@@ -120,6 +122,7 @@ def save_rating(request):
         for row in rating:
             row['timestamp'] = row['timestamp'].timestamp()
             row['userId'] = 0
+        print(rating)
         content_recommendations = generate_ratings(rating, 10)
         collaborative_recommendations = generate_reccomendation(rating, 10)
         content=[]
@@ -165,6 +168,14 @@ def save_rating(request):
         else:
             Recommendation(userId=user, recommended_movies=json_file).save()
     return HttpResponse()
+@login_required
+def rated_list(request):
+    user_id = request.user.id
+    ratings = Rating.objects.filter(userId=user_id).values('movieId', 'rating')
+    movies =[]
+    for movie in ratings:
+        movies.append(movie['rating'])
+    return JsonResponse({"data": movies})
 
 @login_required
 def rated_movies(request):
@@ -177,14 +188,14 @@ def rated_movies(request):
         url = urlopen("https://api.themoviedb.org/3/search/movie?api_key=493ea9e32e1d2f282c72572e88e8a80f&query=" + urllib.parse.quote(title) + "&callback=?")
         data = url.read().decode('utf-8').strip('?()')
         data=json.loads(data)
-        if data["results"]==[]:
-            poster_path=""
+        if data["total_results"]==0:
+            poster_path="https://via.placeholder.com/542x813.png?text=Sorry+we+couldnt+find+this+poster"
         for i in data["results"]:
             if i["poster_path"] != None:
                 poster_path = "http://image.tmdb.org/t/p/w500/" + i["poster_path"]
                 break
             else:
-                poster_path = "no image"
+                poster_path = "https://via.placeholder.com/542x813.png?text=Sorry+we+couldnt+find+this+poster"
         movies.append({'poster':poster_path,'title':main_title[0]['title'],'rating':movie['rating']})
 
     return render(request, 'movierec/rated_movies.html', {'movies': movies})
@@ -192,41 +203,20 @@ def rated_movies(request):
 @require_http_methods(['POST', 'OPTIONS','GET'])
 def recommended_movies(request):
     return render(request,'movierec/recommended_movies.html')
-    # if request.method == 'POST':
-    #     body = json.loads(request.body.decode('utf8'))
-    #     slider_value = int(float(body['slider']))
-    #     user_id = request.user.id
-    #     ratings = Rating.objects.filter(userId=user_id).values('userId', 'movieId', 'rating', 'timestamp')
-    #     rating = list(ratings)
-    #     recommendations = []
-    #     for row in rating:
-    #         row['timestamp'] = row['timestamp'].timestamp()
-    #         row['userId'] = 0
-    #     content_recommendations = generate_ratings(rating, 10)
-    #     collaborative_recomendations = generate_reccomendation(rating, 10)
-    #     if slider_value > 0:
-    #         recommendations.append(content_recommendations[0:(5 + slider_value)])
-    #         recommendations.append(collaborative_recomendations[0:(5 - slider_value)])
-    #     else:
-    #         recommendations.append(content_recommendations[0:(5 - slider_value)])
-    #         recommendations.append(collaborative_recomendations[0:(5 + slider_value)])
-    #     print(recommendations)
-    #     print(content_recommendations)
-    #     print(collaborative_recomendations)
-    #     return render(request,'movierec/recommended_movies.html',{'recommendations':recommendations})
-    # else:
+
 def movie_list(request):
     user_id= request.user.id
-    recommendations_object = Recommendation.objects.filter(userId = user_id).values('recommended_movies')
-    recommendations = recommendations_object[0]['recommended_movies']
+    recommendations = Recommendation.objects.latest('id').recommended_movies
+    print(recommendations)
+    # recommendations = recommendations_object[0]['recommended_movies']
     number_of_rated_movies = Rating.objects.filter(userId=user_id).count()
-    min=5
+    min=0
     max=50
     if number_of_rated_movies>max:
         number_of_rated_movies=max
     elif number_of_rated_movies<min:
         number_of_rated_movies=min
     min_max_normalization = (number_of_rated_movies-min)/(max-min)
-    default= (min_max_normalization*8)-5
+    default= (min_max_normalization*7)-5
     print(type(json.loads(recommendations)))
     return JsonResponse({"data":json.loads(recommendations),"default":default})

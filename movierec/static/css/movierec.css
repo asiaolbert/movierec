@@ -128,10 +128,10 @@ a{
 #recommendations-container{
     padding-top: 50px;
 }
-#rec-poster{
-    width:234px;
-    height: 351px;
-}
+/*#rec-poster,#no-poster{*/
+/*    width:235px;*/
+/*    height: 351px;*/
+/*}*/
 hr{
     width: 900px;
 }
@@ -151,9 +151,9 @@ h1 { font-size: 1.5em; margin: 10px; }
     width: 300px;
 
 }
-#no-poster{
-    width:300px;
-}
+/*#no-poster{*/
+/*    width:300px;*/
+/*}*/
 /****** Style Star Rating Widget *****/
 
 .rating {

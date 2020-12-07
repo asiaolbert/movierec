@@ -30,6 +30,10 @@ function AutoCompleteSelectHandler(event, ui) {
             .then(data => {
                 document.getElementById("movie-container").style.visibility = "visible";
                 $("#movie-title").text(selectedObj.label);
+                $("#send-text").empty()
+                for (var i = 1; i <= 5; i++) {
+                        document.getElementById("star" + i).checked = false;
+                    }
                 starsvalue = data["data"]
                 if (starsvalue > 0) {
                     for (var i = 1; i <= starsvalue; i++) {
@@ -96,7 +100,7 @@ function AutoCompleteSelectHandler(event, ui) {
                 console.log(json);
                 $('#poster').html('<img src=\"http://image.tmdb.org/t/p/w500/' + poster_path + '\" class=\"img-responsive\" >');
             } else {
-                $('#poster').html('<p>No image found</p>')
+                $('#poster').html('<img src=\"https://via.placeholder.com/542x813.png?text=Sorry+we+couldnt+find+this+poster\" class=\"img-responsive\">');
             }
         })
 

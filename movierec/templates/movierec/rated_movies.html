@@ -19,8 +19,8 @@
                                 <p>{{ movie.title }}</p>
                             </div>
                             <div class="card-action">
-                                <div class="container" id="stars-rated-movies">
-                                    <fieldset class="rating">
+                                <div class="container-n" id="stars-rated-movies">
+                                    <fieldset class="rating" id="{{ forloop.counter0 }}">
                                         <input type="radio" id="star5" name="rating" value="5"/><label class="full"
                                                                                                        for="star5"
                                                                                                        title="Awesome - 5 stars"></label>

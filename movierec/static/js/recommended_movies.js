@@ -28,7 +28,7 @@ function movie_card(data,i, algo) {
              $("#recommended-movies").append('   <div class="col s3">\n' +
         '                    <div class="card blue-grey darken-1">\n' +
         '                        <div class="card-image">\n' +
-        '                            <img id = "no-poster" class="img-resposnive" src="{% static "images/noimage.svg" %}">\n' +
+        '                            <img id = "no-poster" class="img-resposnive" src=\"https://via.placeholder.com/542x813.png?text=Sorry+we+couldnt+find+this+poster\">\n' +
         '                        </div>\n' +
         '                        <div class="card-stacked">\n' +
         '                            <div class="card-content">\n' +
