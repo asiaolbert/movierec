@@ -11,17 +11,21 @@ function stars() {
     })
         .then(response => response.json())
         .then(data => {console.log(data["data"])
-            // var elements = document.getElementsByClassName("container-n");
-
+            // childNodes has all data including input, label and text fields,
+            // switch below changes the input value to adequate field for later selection
             for(var i=0; i<data["data"].length; i++){
-                starsvalue = data["data"][i]
-            console.log(document.getElementById(i).children)
-                if (starsvalue > 0) {
-                    for (var i = 0; i <= starsvalue; i=i+2) {
-                        // document.getElementById("star" + i).checked = true;
-                        console.log(document.getElementById(i).children[i])
-                        document.getElementById("stars-rated-movies"+i).childNodes[i].style.checked=true;
-                    }
-                }}
+                switch(data["data"][i]){
+                    case 1:j=13;
+                    break;
+                    case 2:j=10;
+                    break;
+                    case 3:j=7;
+                    break;
+                    case 4:j=4;
+                    break;
+                    case 5:j=1;
+                }
+                document.getElementById(i).childNodes[j].checked=true
+            }
 })
 }
