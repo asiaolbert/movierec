@@ -28,7 +28,8 @@ SECRET_KEY = '80^-eew%hbd(z19wh@8qbj-^8--vf$(j+e^#=9pt44fzkx2yi8'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'scynthero.pythonanywhere.com'
+    'scynthero.pythonanywhere.com',
+    'localhost',
 ]
 
 
