@@ -27,7 +27,9 @@ SECRET_KEY = '80^-eew%hbd(z19wh@8qbj-^8--vf$(j+e^#=9pt44fzkx2yi8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'scynthero.pythonanywhere.com'
+]
 
 
 # Application definition
