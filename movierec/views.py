@@ -24,49 +24,49 @@ from django.views.generic import ListView
 # Create your views here.
 def home_redirect(request):
     return redirect("/home/")
-def gen_users(request):
-    def get_random_username():
-        letters = string.ascii_lowercase
-        username = ''.join(random.choice(letters) for i in range(8))
-        return username, username + '@gmail.com'
-
-    def get_random_password():
-        signs = string.ascii_letters + string.digits
-        password = ''.join((random.choice(signs) for i in range(9)))
-        return password
-
-    l = []
-    for x in range(600):
-        l.append([get_random_username()[0], get_random_username()[1], get_random_password()])
-
-
-    for x in l:
-        user = User.objects.create_user(x[0], x[1], x[2])
-        user.save()
-    return JsonResponse({'ok'})
-
-def read_csv(request):
-    path = "/home/asia/pracain/algorytmy/dane"
-    os.chdir(path)
-    from movierec.models import Movie
-    with open('movies.csv') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            movie = Movie(movieId=row['movieId'],title=row['title'],genres=row['genres'])
-            movie.save()
-    return JsonResponse({'ok':1})
-
-def read_csv_rating(request):
-    path = "/home/asia/pracain/algorytmy/dane"
-    os.chdir(path)
-    from movierec.models import Rating
-    with open('ratings.csv') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for idx,row in enumerate(reader):
-            connection.cursor().execute(f'INSERT INTO {Rating._meta.db_table} VALUES({idx},{row["userId"]},{row["movieId"]},{row["rating"]},{row["timestamp"]})')
-            # rating = Rating(userId=row['userId'],movieId=row['movieId'],rating=row['rating'],timestamp=row['timestamp'])
-            # rating.save()
-    return JsonResponse({'ok':1})
+# def gen_users(request):
+#     def get_random_username():
+#         letters = string.ascii_lowercase
+#         username = ''.join(random.choice(letters) for i in range(8))
+#         return username, username + '@gmail.com'
+#
+#     def get_random_password():
+#         signs = string.ascii_letters + string.digits
+#         password = ''.join((random.choice(signs) for i in range(9)))
+#         return password
+#
+#     l = []
+#     for x in range(600):
+#         l.append([get_random_username()[0], get_random_username()[1], get_random_password()])
+#
+#
+#     for x in l:
+#         user = User.objects.create_user(x[0], x[1], x[2])
+#         user.save()
+#     return JsonResponse({'ok'})
+#
+# def read_csv(request):
+#     path = "/home/asia/pracain/algorytmy/dane"
+#     os.chdir(path)
+#     from movierec.models import Movie
+#     with open('movies.csv') as csvfile:
+#         reader = csv.DictReader(csvfile)
+#         for row in reader:
+#             movie = Movie(movieId=row['movieId'],title=row['title'],genres=row['genres'])
+#             movie.save()
+#     return JsonResponse({'ok':1})
+#
+# def read_csv_rating(request):
+#     path = "/home/asia/pracain/algorytmy/dane"
+#     os.chdir(path)
+#     from movierec.models import Rating
+#     with open('ratings.csv') as csvfile:
+#         reader = csv.DictReader(csvfile)
+#         for idx,row in enumerate(reader):
+#             connection.cursor().execute(f'INSERT INTO {Rating._meta.db_table} VALUES({idx},{row["userId"]},{row["movieId"]},{row["rating"]},{row["timestamp"]})')
+#             # rating = Rating(userId=row['userId'],movieId=row['movieId'],rating=row['rating'],timestamp=row['timestamp'])
+#             # rating.save()
+#     return JsonResponse({'ok':1})
 
 def home(request):
     return render(request, "movierec/home.html")
