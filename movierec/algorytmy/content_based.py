@@ -5,9 +5,9 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from itertools import combinations
 from sklearn.metrics.pairwise import cosine_similarity
-ratings= pd.read_csv('movierec/algorytmy/dane/ratings.csv',encoding='latin-1')
-movies = pd.read_csv('movierec/algorytmy/dane/movies.csv',encoding='latin-1')
-tags = pd.read_csv('movierec/algorytmy/dane/tags.csv',encoding='latin-1')
+ratings= pd.read_csv('/home/scynthero/scynthero.pythonanywhere.com/movierec/algorytmy/dane/ratings.csv',encoding='latin-1')
+movies = pd.read_csv('/home/scynthero/scynthero.pythonanywhere.com/movierec/algorytmy/dane/movies.csv',encoding='latin-1')
+tags = pd.read_csv('/home/scynthero/scynthero.pythonanywhere.com/movierec/algorytmy/dane/tags.csv',encoding='latin-1')
 # creates dataframe with every movie and genres according to that movie
 def TFIDF(movies):
     tf = TfidfVectorizer(analyzer=lambda s: (c for i in range(1,4)

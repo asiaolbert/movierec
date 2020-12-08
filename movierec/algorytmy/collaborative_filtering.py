@@ -2,9 +2,9 @@ import pandas as pd
 import numpy as np
 from scipy import spatial
 
-ratings= pd.read_csv('movierec/algorytmy/dane/ratings.csv',encoding='latin-1')
-movies = pd.read_csv('movierec/algorytmy/dane/movies.csv',encoding='latin-1')
-tags = pd.read_csv('movierec/algorytmy/dane/tags.csv',encoding='latin-1')
+ratings= pd.read_csv('/home/scynthero/scynthero.pythonanywhere.com/movierec/algorytmy/dane/ratings.csv',encoding='latin-1')
+movies = pd.read_csv('/home/scynthero/scynthero.pythonanywhere.com/movierec/algorytmy/dane/movies.csv',encoding='latin-1')
+tags = pd.read_csv('/home/scynthero/scynthero.pythonanywhere.com/movierec/algorytmy/dane/tags.csv',encoding='latin-1')
 
 def add_user(data):
     new_matrix = ratings.append(data, ignore_index=True)
