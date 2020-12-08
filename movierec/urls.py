@@ -5,9 +5,9 @@ from . import views
 
 urlpatterns = [
 
-    path('gen_users/', views.gen_users, name='gen_users'),
-    path('read_csv/', views.read_csv, name='read_csv'),
-    path('read_csv_rating/', views.read_csv_rating, name='read_csv_rating'),
+    # path('gen_users/', views.gen_users, name='gen_users'),
+    # path('read_csv/', views.read_csv, name='read_csv'),
+    # path('read_csv_rating/', views.read_csv_rating, name='read_csv_rating'),
     path('',views.home_redirect, name='home_redirect'),
     path('home/',views.searchbox,name='home'),
     path('user_rating/',views.user_rating,name='user_rating'),
